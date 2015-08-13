@@ -20,9 +20,9 @@ c = gets.chomp.to_f
 
 roots = roots_of_a_quadratic_equation(a, b, c);
 
-if roots == nil
-  puts "There are not roots."
-else
+if roots
   puts "The root x1: #{roots[0]}"
   puts "The root x2: #{roots[1]}"
+else
+  puts "There are not roots."
 end
