@@ -3,8 +3,8 @@ def roots_of_a_quadratic_equation(a, b, c)
 
   return nil if d < 0
 
-  x1 = (-b + Math.sqrt(d)) / 2 * a
-  x2 = (-b - Math.sqrt(d)) / 2 * a
+  x1 = (-b + Math.sqrt(d)) / 2 * a.to_f
+  x2 = (-b - Math.sqrt(d)) / 2 * a.to_f
 
   [x1, x2]
 end
