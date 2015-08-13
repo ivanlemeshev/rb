@@ -8,5 +8,4 @@ name = gets.chomp
 puts "How tall are you? (in cm)"
 height = gets.chomp.to_f
 
-weight = ideal_weight(height)
-puts "Your ideal weight is #{weight} kg."
+puts "Your ideal weight is #{ideal_weight(height)} kg."
