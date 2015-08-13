@@ -17,7 +17,6 @@ second_side = gets.chomp.to_f
 puts "Please enter the third side of triangle (in cm):"
 third_side = gets.chomp.to_f
 
-
 if right_triangle?(second_side, third_side, first_side)
   puts "The triangle is right."
 else
