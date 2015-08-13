@@ -1,9 +1,9 @@
-def isosceles_triangle?(a, b, c)
+def equilateral_triangle?(a, b, c)
   (a == b) && (a == c)
 end
 
 def right_triangle?(a, b, c)
-  return false if isosceles_triangle?(a, b, c)
+  return false if equilateral_triangle?(a, b, c)
   sides = [a, b, c].sort
   sides[0]**2 + sides[1]**2 == sides[2]**2
 end
