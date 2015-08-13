@@ -8,5 +8,4 @@ base = gets.chomp.to_f
 puts "Please enter the height of a triangle (in cm): "
 height = gets.chomp.to_f
 
-area = area_of_a_triangle(base, height)
-puts "The area of a triangle is #{area} cm."
+puts "The area of a triangle is #{area_of_a_triangle(base, height)} cm."
