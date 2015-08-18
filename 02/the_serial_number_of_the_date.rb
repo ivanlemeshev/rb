@@ -69,7 +69,7 @@ print "Please enter the year (in range 1-3000): "
 year = gets.chomp.to_i
 
 if valid_date?(day, month, year)
-  puts "The serial number of the datr is #{serial_number_of_the_date(day, month, year)}."
+  puts "The serial number of the date is #{serial_number_of_the_date(day, month, year)}."
 else
   puts "The date is incorrect."
 end
