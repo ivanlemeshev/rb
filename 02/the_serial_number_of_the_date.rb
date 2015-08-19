@@ -3,15 +3,8 @@ def divisible_by?(number, divider)
 end
 
 def leap_year?(year)
-  if !divisible_by?(year, 4)
-    false
-  elsif divisible_by?(year, 4) && !divisible_by?(year, 100)
-    true
-  elsif divisible_by?(year, 100) && !divisible_by?(year, 400)
-    false
-  else
-    true
-  end
+  return false if !divisible_by?(year, 4) || (divisible_by?(year, 100) && !divisible_by?(year, 400))
+  true
 end
 
 def valid_year?(year)
