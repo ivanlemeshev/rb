@@ -9,9 +9,6 @@ class Train
     @type = type
     @wagons = wagons
     @speed = 0
-    @current_station = nil
-    @previous_station = nil
-    @next_station = nil
   end
 
   def route=(route)
