@@ -2,8 +2,8 @@ class Train
   TYPE_PASSENGER = "passenger"
   TYPE_FREIGHT = "freight"
 
-  attr_reader :speed, :wagons, :type, :route, :current_station, :previous_station, :next_station
-  attr_writer :speed, :current_station, :previous_station, :next_station
+  attr_accessor :speed, :current_station, :previous_station, :next_station
+  attr_reader :wagons, :type, :route
 
   def initialize(type, wagons = 0)
     @type = type
