@@ -22,6 +22,7 @@ class CargoTrain < Train
 
   private
 
+  # method is used only in this class
   def cargo_wagon?(wagon)
     wagon.type == Wagon::TYPE_CARGO
   end

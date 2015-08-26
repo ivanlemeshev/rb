@@ -42,6 +42,7 @@ class RailwayStation
 
   private
 
+  # method is used only in this class
   def trains_by_type(type)
     self.trains.select { |train| train.type == type }
   end

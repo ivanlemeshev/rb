@@ -97,6 +97,7 @@ class Train
 
   protected
 
+  # method can be used in inherited classes
   def stopped?
     self.speed == 0
   end
