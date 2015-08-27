@@ -24,22 +24,24 @@ class Train
   end
 
   def attach_wagon(wagon)
-    if stopped?
+    if stopped? && train_wagon?(wagon)
       @wagons << wagon
       puts "New wagon is attached to the train."
-    else
+    elsif !stopped?
       puts "New wagon can not be attached, the train is in motion."
+    else
+      puts "The wagon can not be attached. The wagon is not #{wagon.type}."
     end
   end
 
   def detach_wagon(wagon)
-    if stopped? && !self.wagons.empty?
+    if stopped? && train_wagon?(wagon)
       @wagons.delete(wagon)
       puts "The wagon is detached from the train."
     elsif !stopped?
       puts "The wagon can not be detached, the train is in motion."
     else
-      puts "The wagon can not be detached, the train has no wagons."
+      puts "The wagon can not be detached. The wagon is not #{wagon.type}."
     end
   end
 
@@ -96,6 +98,11 @@ class Train
   end
 
   protected
+
+  # method can be used in inherited classes
+  def train_wagon?(wagon)
+    wagon.type == self.type
+  end
 
   # method can be used in inherited classes
   def stopped?
