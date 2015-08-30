@@ -1,6 +1,10 @@
 class Train
+  include Manufacturer
+
   TYPE_CARGO = :cargo
   TYPE_PASSANGER = :passanger
+
+  @@trains = {}
 
   attr_accessor :speed, :current_station, :previous_station, :next_station
   attr_reader :route, :type, :wagons
@@ -8,6 +12,12 @@ class Train
   def initialize
     @wagons = []
     @speed = 0
+    @@trains[self.object_id] = self
+  end
+
+  def self.find(train_number)
+    return @@trains.fetch(train_number) if @@trains.has_key?(train_number)
+    nil
   end
 
   def route=(route)
