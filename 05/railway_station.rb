@@ -1,9 +1,16 @@
 class RailwayStation
   attr_reader :name, :trains
 
+  @@stations = []
+
   def initialize(name)
     @name = name
     @trains = []
+    @@stations << self
+  end
+
+  def self.all
+    @@stations.each { |station| puts station.name }
   end
 
   def add_train(train)
