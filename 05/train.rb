@@ -7,12 +7,13 @@ class Train
   @@trains = {}
 
   attr_accessor :speed, :current_station, :previous_station, :next_station
-  attr_reader :route, :type, :wagons
+  attr_reader :route, :type, :wagons, :number
 
-  def initialize
+  def initialize(number)
+    @number = number
     @wagons = []
     @speed = 0
-    @@trains[self.object_id] = self
+    @@trains[self.number] = self
   end
 
   def self.find(train_number)
