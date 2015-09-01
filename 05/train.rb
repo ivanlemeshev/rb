@@ -1,5 +1,6 @@
 class Train
   include Manufacturer
+  include InstanceCounter
 
   TYPE_CARGO = :cargo
   TYPE_PASSANGER = :passanger
@@ -14,6 +15,7 @@ class Train
     @wagons = []
     @speed = 0
     @@trains[self.number] = self
+    self.class.instances += 1
   end
 
   def self.find(train_number)
