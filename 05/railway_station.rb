@@ -10,7 +10,7 @@ class RailwayStation
   end
 
   def self.all
-    @@stations.each { |station| puts station.name }
+    @@stations
   end
 
   def add_train(train)
