@@ -19,7 +19,7 @@ class Route
     if self.stations.empty?
       puts 'There are no stations in the route.'
     else
-      self.stations.each { |station| puts station.name }
+      self.stations.each { |station| p station }
     end
   end
 
