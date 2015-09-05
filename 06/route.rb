@@ -6,12 +6,11 @@ class Route
   end
 
   def add_station(station)
-    validate_station!(station)
+    validate_station(station)
     self.stations << station
   end
 
   def delete_station(station)
-    validate_station!(station)
     self.stations.delete(station)
   end
 
@@ -39,12 +38,11 @@ class Route
 
   private
 
-  def validate_station!(station)
+  def validate_station(station)
     raise 'ivalid station' unless station.is_a? RailwayStation
   end
 
   def station_index(station)
-    validate_station!(station)
     station_index = self.stations.index(station)
     return nil unless station_index
     yield station_index
