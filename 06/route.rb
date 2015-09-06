@@ -39,7 +39,7 @@ class Route
   private
 
   def validate_station(station)
-    fail 'ivalid station' unless station.is_a? RailwayStation
+    raise 'ivalid station' unless station.is_a? RailwayStation
   end
 
   def station_index(station)
