@@ -5,6 +5,8 @@ class Train
   TYPE_CARGO = :cargo
   TYPE_PASSANGER = :passanger
 
+  NUMBER_FORMAT = /^[a-z\d]{3}\-?[a-z\d]{2}$/i
+
   @@trains = {}
 
   attr_accessor :speed, :current_station, :previous_station, :next_station
@@ -12,6 +14,7 @@ class Train
 
   def initialize(number)
     @number = number
+    validate!
     @wagons = []
     @speed = 0
     @@trains[self.number] = self
@@ -23,9 +26,14 @@ class Train
     nil
   end
 
+  def valid?
+    validate!
+  rescue
+    false
+  end
+
   def route=(route)
     @route = route
-    puts "Route is added to the train."
     self.current_station = self.route.stations.first
     set_positions
   end
@@ -37,30 +45,18 @@ class Train
   end
 
   def attach_wagon(wagon)
-    if stopped? && train_wagon?(wagon)
-      @wagons << wagon
-      puts "New wagon is attached to the train."
-    elsif !stopped?
-      puts "New wagon can not be attached, the train is in motion."
-    else
-      puts "The wagon can not be attached. The wagon is not #{wagon.type}."
-    end
+    validate_wagon(wagon)
+    @wagons << wagon
   end
 
   def detach_wagon(wagon)
-    if stopped? && train_wagon?(wagon)
-      @wagons.delete(wagon)
-      puts "The wagon is detached from the train."
-    elsif !stopped?
-      puts "The wagon can not be detached, the train is in motion."
-    else
-      puts "The wagon can not be detached. The wagon is not #{wagon.type}."
-    end
+    validate_wagon(wagon)
+    @wagons.delete(wagon)
   end
 
   def show_current_station
     if self.current_station
-      puts "Current station is #{self.current_station.name}."
+      p self.current_station
     else
       puts "There is no current station."
     end
@@ -68,7 +64,7 @@ class Train
 
   def show_previous_station
     if self.previous_station
-      puts "Previous station is #{self.previous_station.name}."
+      p self.previous_station
     else
       puts "There is no previous station."
     end
@@ -76,7 +72,7 @@ class Train
 
   def show_next_station
     if self.next_station
-      puts "Next station is #{self.next_station.name}."
+      p self.next_station.name
     else
       puts "There is no next station."
     end
@@ -86,8 +82,6 @@ class Train
     if self.previous_station
       self.current_station = self.previous_station
       set_positions
-    else
-      puts "There is no previous station."
     end
   end
 
@@ -95,29 +89,35 @@ class Train
     if self.next_station
       self.current_station = self.next_station
       set_positions
-    else
-      puts "There is no next station."
     end
   end
 
   def increase_speed
     self.speed += 1
-    puts "Speed of the train is increased by 1."
   end
 
   def stop
     self.speed = 0
-    puts "The train is stopped."
   end
 
   protected
 
-  # method can be used in inherited classes
+  def validate!
+    raise 'the number has invalid format' if number !~ NUMBER_FORMAT
+    raise "the train with number #{number} already exists" if @@trains.has_key?(number)
+    true
+  end
+
+  def validate_wagon(wagon)
+    raise 'invalid wagon' unless wagon.is_a? Wagon
+    raise 'invalid wagon type' unless train_wagon?(wagon)
+    raise 'the train is in motion' unless stopped?
+  end
+
   def train_wagon?(wagon)
     wagon.type == self.type
   end
 
-  # method can be used in inherited classes
   def stopped?
     self.speed == 0
   end
