@@ -56,14 +56,14 @@ class RailwayStation
   private
 
   def validate!
-    raise 'the name length must be more than or equal to 3 characters' if name.length < NAME_MIN
-    raise 'the name length must be less than or equal to 255 characters' if name.length > NAME_MAX
-    raise 'the name has invalid format' if name !~ NAME_FORMAT
+    fail 'the name length must be more than or equal to 3 characters' if name.length < NAME_MIN
+    fail 'the name length must be less than or equal to 255 characters' if name.length > NAME_MAX
+    fail 'the name has invalid format' if name !~ NAME_FORMAT
     true
   end
 
   def validate_train(train)
-    raise 'invalid train' unless train.is_a? Train
+    fail 'invalid train' unless train.is_a? Train
   end
 
   def trains_by_type(type)
