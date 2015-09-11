@@ -54,6 +54,10 @@ class Train
     @wagons.delete(wagon)
   end
 
+  def each_wagon(&block)
+    self.wagons.each { |wagon| block.call(wagon) }
+  end
+
   def show_current_station
     if self.current_station
       p self.current_station
