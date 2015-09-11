@@ -44,6 +44,10 @@ class RailwayStation
     end
   end
 
+  def each_train(&block)
+    self.trains.each { |train| block.call(train) }
+  end
+
   def show_trains_by_type(type)
     trains = trains_by_type(type)
     if trains.empty?
