@@ -26,26 +26,26 @@ class RailwayStation
 
   def add_train(train)
     validate_train(train)
-    self.trains << train
+    @trains << train
   end
 
   def send_train(train)
-    self.trains.delete(train)
+    @trains.delete(train)
     train.current_station = nil
     train.previous_station = self
     train.next_station = train.route.next_station(self)
   end
 
   def show_trains
-    if self.trains.empty?
+    if @trains.empty?
       puts "There are no trains on the station."
     else
-      self.trains.each { |train| p train }
+      @trains.each { |train| p train }
     end
   end
 
   def each_train(&block)
-    self.trains.each { |train| block.call(train) }
+    @trains.each { |train| block.call(train) }
   end
 
   def show_trains_by_type(type)
@@ -60,17 +60,17 @@ class RailwayStation
   private
 
   def validate!
-    raise 'the name length must be more than or equal to 3 characters' if name.length < NAME_MIN
-    raise 'the name length must be less than or equal to 255 characters' if name.length > NAME_MAX
-    raise 'the name has invalid format' if name !~ NAME_FORMAT
+    fail 'the min length of name is 3 characters' if name.length < NAME_MIN
+    fail 'the max length of name is 255 characters' if name.length > NAME_MAX
+    fail 'the name has invalid format' if name !~ NAME_FORMAT
     true
   end
 
   def validate_train(train)
-    raise 'invalid train' unless train.is_a? Train
+    fail 'invalid train' unless train.is_a? Train
   end
 
   def trains_by_type(type)
-    self.trains.select { |train| train.type == type }
+    @trains.select { |train| train.type == type }
   end
 end

@@ -22,7 +22,7 @@ class Train
   end
 
   def self.find(train_number)
-    return @@trains.fetch(train_number) if @@trains.has_key?(train_number)
+    return @@trains.fetch(train_number) if @@trains.key?(train_number)
     nil
   end
 
@@ -39,9 +39,9 @@ class Train
   end
 
   def set_positions
-    self.current_station.add_train(self)
-    self.previous_station = self.route.previous_station(self.current_station)
-    self.next_station = self.route.next_station(self.current_station)
+    @current_station.add_train(self)
+    self.previous_station = @route.previous_station(@current_station)
+    self.next_station = @route.next_station(@current_station)
   end
 
   def attach_wagon(wagon)
@@ -55,45 +55,43 @@ class Train
   end
 
   def each_wagon(&block)
-    self.wagons.each { |wagon| block.call(wagon) }
+    @wagons.each { |wagon| block.call(wagon) }
   end
 
   def show_current_station
-    if self.current_station
-      p self.current_station
+    if @current_station
+      p @current_station
     else
       puts "There is no current station."
     end
   end
 
   def show_previous_station
-    if self.previous_station
-      p self.previous_station
+    if @previous_station
+      p @previous_station
     else
       puts "There is no previous station."
     end
   end
 
   def show_next_station
-    if self.next_station
-      p self.next_station.name
+    if @next_station
+      p @next_station.name
     else
       puts "There is no next station."
     end
   end
 
   def go_to_the_previous_station
-    if self.previous_station
-      self.current_station = self.previous_station
-      set_positions
-    end
+    return unless @previous_station
+    self.current_station = @previous_station
+    set_positions
   end
 
   def go_to_the_next_station
-    if self.next_station
-      self.current_station = self.next_station
-      set_positions
-    end
+    return unless @next_station
+    self.current_station = @next_station
+    set_positions
   end
 
   def increase_speed
@@ -107,19 +105,19 @@ class Train
   protected
 
   def validate!
-    raise 'the number has invalid format' if number !~ NUMBER_FORMAT
-    raise "the train with number #{number} already exists" if @@trains.has_key?(number)
+    fail 'the number has invalid format' if number !~ NUMBER_FORMAT
+    fail "the train #{number} already exists" if @@trains.key?(number)
     true
   end
 
   def validate_wagon(wagon)
-    raise 'invalid wagon' unless wagon.is_a? Wagon
-    raise 'invalid wagon type' unless train_wagon?(wagon)
-    raise 'the train is in motion' unless stopped?
+    fail 'invalid wagon' unless wagon.is_a? Wagon
+    fail 'invalid wagon type' unless train_wagon?(wagon)
+    fail 'the train is in motion' unless stopped?
   end
 
   def train_wagon?(wagon)
-    wagon.type == self.type
+    wagon.type == @type
   end
 
   def stopped?
