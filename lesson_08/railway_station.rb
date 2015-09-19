@@ -7,6 +7,10 @@ class RailwayStation
 
   @@stations = []
 
+  def self.all
+    @@stations
+  end
+
   def initialize(name)
     @name = name
     validate!
@@ -14,14 +18,14 @@ class RailwayStation
     @@stations << self
   end
 
+  def to_s
+    "#{@name}"
+  end
+
   def valid?
     validate!
   rescue
     false
-  end
-
-  def self.all
-    @@stations
   end
 
   def add_train(train)
@@ -44,10 +48,6 @@ class RailwayStation
     end
   end
 
-  def each_train(&block)
-    @trains.each { |train| block.call(train) }
-  end
-
   def show_trains_by_type(type)
     trains = trains_by_type(type)
     if trains.empty?
@@ -55,6 +55,10 @@ class RailwayStation
     else
       trains.each { |train| p train }
     end
+  end
+
+  def each_train(&block)
+    @trains.each { |train| block.call(train) }
   end
 
   private

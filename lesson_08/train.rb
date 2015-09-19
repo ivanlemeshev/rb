@@ -12,6 +12,11 @@ class Train
   attr_accessor :speed, :current_station, :previous_station, :next_station
   attr_reader :route, :type, :wagons, :number
 
+  def self.find(train_number)
+    return @@trains.fetch(train_number) if @@trains.key?(train_number)
+    nil
+  end
+  
   def initialize(number)
     @number = number
     validate!
@@ -21,9 +26,8 @@ class Train
     self.class.instances += 1
   end
 
-  def self.find(train_number)
-    return @@trains.fetch(train_number) if @@trains.key?(train_number)
-    nil
+  def to_s
+    "#{@number}"
   end
 
   def valid?
@@ -59,27 +63,15 @@ class Train
   end
 
   def show_current_station
-    if @current_station
-      p @current_station
-    else
-      puts "There is no current station."
-    end
+    puts @current_station ||= "There is no current station."
   end
 
   def show_previous_station
-    if @previous_station
-      p @previous_station
-    else
-      puts "There is no previous station."
-    end
+    puts @previous_station ||= "There is no previous station."
   end
 
   def show_next_station
-    if @next_station
-      p @next_station.name
-    else
-      puts "There is no next station."
-    end
+    puts @next_station ||= "There is no next station."
   end
 
   def go_to_the_previous_station

@@ -5,4 +5,8 @@ class Wagon
   TYPE_PASSANGER = :passanger
 
   attr_reader :type
+
+  def to_s
+    "#{@type}"
+  end
 end
