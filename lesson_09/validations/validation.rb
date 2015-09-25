@@ -36,6 +36,7 @@ module Validation
       validations.each do |options|
         send "validate_#{options[:type]}".to_sym, options
       end
+      true
     end
   end
 end
