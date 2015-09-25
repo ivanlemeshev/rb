@@ -1,15 +1,25 @@
 module Validators
   module Unique
-    def validate_unique(options)
-      fail "Attribute '#{options[:name]}' already exists." unless unique?(options)
-      attrs = self.class.class_variable_get(:@@attrs)
-      attrs << instance_variable_get("@#{options[:name]}".to_sym)
-      self.class.class_variable_set(:@@attrs, attrs)
+    def self.included(base)
+      base.instance_variable_set(:@unique_attrs, {})
+
+      base.send(:define_method, :unique_attrs) do
+        base.instance_variable_get(:@unique_attrs)
+      end
     end
 
-    def unique?(options)
-      attrs = self.class.class_variable_get(:@@attrs)
-      !attrs.include? instance_variable_get("@#{options[:name]}".to_sym)
+    protected
+
+    def validate_unique(options)
+      value = instance_variable_get("@#{options[:name]}")
+      attrs = unique_attrs
+      attrs[options[:name]] ||= []
+      fail "Attribute `#{options[:name]} = #{value}` already exists." if not_unique?(options)
+      attrs[options[:name]] << value
+    end
+
+    def not_unique?(options)
+      unique_attrs[options[:name]].include? instance_variable_get("@#{options[:name]}")
     end
   end
 end

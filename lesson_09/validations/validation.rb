@@ -1,20 +1,26 @@
 module Validation
   def self.included(base)
-    class_variable_set(:@@validations, [])
+    base.instance_variable_set(:@validations, [])
+
+    base.send(:define_method, :validations) do
+      base.instance_variable_get(:@validations)
+    end
+
     base.extend ClassMethods
     base.send :include, InstanceMethods
     base.send :include, Validators
   end
 
   module ClassMethods
-    attr_reader :rules
-
     def validate(name, type, param = nil)
-      validation = { name: name, type: type, param: param }
-      validations = class_variable_get(:@@validations)
-      validations << validation unless validations.include? validation
+      add_validation(name: name, type: type, param: param)
     end
 
+    def add_validation(validation)
+      class_validations = instance_variable_get(:@validations)
+      class_validations << validation unless class_validations.include? validation
+      instance_variable_set(:@validations, class_validations)
+    end
   end
 
   module InstanceMethods
@@ -27,7 +33,7 @@ module Validation
     protected
 
     def validate!
-      self.class.class_variable_get(:@@validations).each do |options|
+      validations.each do |options|
         send "validate_#{options[:type]}".to_sym, options
       end
     end
