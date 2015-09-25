@@ -1,9 +1,16 @@
 class RailwayStation
+  include Validation
+
   NAME_MAX = 255
   NAME_MIN = 3
-  NAME_FORMAT = /^[a-z\s\d]+$/i
+  NAME_FORMAT = /^[A-Z\s\d]{3,255}$/i
 
   attr_reader :name, :trains
+
+  validate :name, :type, String
+  validate :name, :presence
+  validate :name, :format, NAME_FORMAT
+  validate :name, :unique
 
   @@stations = []
 
@@ -20,12 +27,6 @@ class RailwayStation
 
   def to_s
     "#{@name}"
-  end
-
-  def valid?
-    validate!
-  rescue
-    false
   end
 
   def add_train(train)
@@ -62,13 +63,6 @@ class RailwayStation
   end
 
   private
-
-  def validate!
-    fail 'the min length of name is 3 characters' if name.length < NAME_MIN
-    fail 'the max length of name is 255 characters' if name.length > NAME_MAX
-    fail 'the name has invalid format' if name !~ NAME_FORMAT
-    true
-  end
 
   def validate_train(train)
     fail 'invalid train' unless train.is_a? Train
