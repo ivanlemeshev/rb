@@ -1,4 +1,5 @@
 class Train
+  include Validation
   include Manufacturer
   include InstanceCounter
 
@@ -12,11 +13,15 @@ class Train
   attr_accessor :speed, :current_station, :previous_station, :next_station
   attr_reader :route, :type, :wagons, :number
 
+  validate :number, :presence
+  validate :number, :format, NUMBER_FORMAT
+  validate :number, :unique
+
   def self.find(train_number)
     return @@trains.fetch(train_number) if @@trains.key?(train_number)
     nil
   end
-  
+
   def initialize(number)
     @number = number
     validate!
@@ -28,12 +33,6 @@ class Train
 
   def to_s
     "#{@number}"
-  end
-
-  def valid?
-    validate!
-  rescue
-    false
   end
 
   def route=(route)
@@ -63,15 +62,15 @@ class Train
   end
 
   def show_current_station
-    puts @current_station ||= "There is no current station."
+    puts @current_station || "There is no current station."
   end
 
   def show_previous_station
-    puts @previous_station ||= "There is no previous station."
+    puts @previous_station || "There is no previous station."
   end
 
   def show_next_station
-    puts @next_station ||= "There is no next station."
+    puts @next_station || "There is no next station."
   end
 
   def go_to_the_previous_station
@@ -95,12 +94,6 @@ class Train
   end
 
   protected
-
-  def validate!
-    fail 'the number has invalid format' if number !~ NUMBER_FORMAT
-    fail "the train #{number} already exists" if @@trains.key?(number)
-    true
-  end
 
   def validate_wagon(wagon)
     fail 'invalid wagon' unless wagon.is_a? Wagon
